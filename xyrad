@@ -22,26 +22,47 @@ apt-get install -y --no-install-recommends \
     libfreeimage-dev swig libboost-all-dev \
     libpthread-stubs0-dev zlib1g-dev
 
-# Create temporary directory and install FFmpeg
+# Set working directory (like WORKDIR in Dockerfile)
+mkdir -p /usr/src/app
+cd /usr/src/app
+
+# Create and activate the virtual environment inside the working directory
+python3.12 -m venv xyenv
+
+# Upgrade pip in the virtual environment
+/usr/src/app/xyenv/bin/pip install --upgrade pip
+
+# Install the dependencies directly using pip (without requirements.txt)
+/usr/src/app/xyenv/bin/pip install --no-cache-dir \
+    aiofiles aioshutil anytree apscheduler \
+    aria2p asyncio cloudscraper dnspython \
+    feedparser flask gevent google-api-python-client \
+    google-auth-httplib2 google-auth-oauthlib gunicorn \
+    httpx lxml motor natsort pillow psutil pymongo \
+    pyrofork python-dotenv python-magic qbittorrent-api \
+    requests telegraph tenacity tgcrypto urllib3 uvloop \
+    xattr yt-dlp[default]
+
+# Install FFmpeg
 mkdir /Temp
 cd /Temp
 wget https://github.com/arakurumi/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar.xz
 7z x ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar.xz
 7z x ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar
 cd /Temp/ffmpeg-n7.1-latest-linux64-nonfree-7.1/bin
-mv ffmpeg /usr/bin/xtra
+mv ffmpeg /usr/bin/xytool
 mv ffprobe /usr/bin/ffprobe
 mv ffplay /usr/bin/ffplay
-chmod +x /usr/bin/xtra /usr/bin/ffprobe /usr/bin/ffplay
+chmod +x /usr/bin/xytool /usr/bin/ffprobe /usr/bin/ffplay
 
 # Install rclone and rename binaries
 cd /Temp
 curl https://rclone.org/install.sh | bash
 
-# rename binaries
-mv /usr/bin/rclone /usr/bin/xone
-mv /usr/bin/aria2c /usr/bin/xria
-mv /usr/bin/qbittorrent-nox /usr/bin/xnox
+# Rename binaries
+mv /usr/bin/rclone /usr/bin/xyfetch
+mv /usr/bin/aria2c /usr/bin/xygrep
+mv /usr/bin/qbittorrent-nox /usr/bin/xyuren
 
 # Clone and build MEGA SDK
 git clone https://github.com/meganz/sdk.git --depth=1 -b v4.8.0 /home/sdk
@@ -51,10 +72,10 @@ autoupdate -fIv && ./autogen.sh
 ./configure --disable-silent-rules --enable-python --with-sodium --disable-examples
 make -j$(nproc --all)
 
-# Build and install the MEGA SDK Python bindings
+# Build and install the MEGA SDK Python bindings in the virtual environment
 cd bindings/python/
 python3.12 setup.py bdist_wheel
-pip3 install --break-system-packages --no-cache-dir dist/megasdk-4.8.0-*.whl
+/usr/src/app/xyenv/bin/pip install --break-system-packages --no-cache-dir dist/megasdk-4.8.0-*.whl
 
 # Clean up unnecessary packages
 apt-get remove -y \
@@ -70,5 +91,5 @@ apt-get autoclean -y
 
 # Clean up temporary directories and files
 rm -rf /Temp
-rm -rf Aeon
+rm -rf xyrad
 rm -rf Dockerfile
