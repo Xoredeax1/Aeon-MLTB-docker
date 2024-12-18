@@ -39,7 +39,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           tags: |
-            latest
+            self
           images: |
             ${{ inputs.username }}/${{ inputs.image_name }}
 
