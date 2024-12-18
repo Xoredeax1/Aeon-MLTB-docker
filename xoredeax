@@ -34,35 +34,35 @@ python3.12 -m venv xyenv
 
 # Install the dependencies directly using pip (without requirements.txt)
 /usr/src/app/xyenv/bin/pip install --no-cache-dir \
-    aiofiles aioshutil anytree apscheduler \
-    aria2p asyncio cloudscraper dnspython \
-    feedparser flask gevent google-api-python-client \
+    aiohttp aiofiles aioshutil anytree==2.8.0 apscheduler \
+    aria2p asyncio beautifulsoup4 bencoding cinemagoer cloudscraper dnspython \
+    electrogram feedparser flask gevent google-api-python-client \
     google-auth-httplib2 google-auth-oauthlib gunicorn \
-    httpx lxml motor natsort pillow psutil pymongo \
-    pyrofork==2.2.11 python-dotenv python-magic qbittorrent-api \
-    requests telegraph tenacity tgcrypto urllib3 uvloop \
-    xattr yt-dlp[default] par2cmdline-turbo
+    httpx langcodes lxml motor mutagen markdown natsort pillow psutil pybase64 \
+    pycountry python-dotenv pyshorteners python-magic qbittorrent-api \
+    requests speedtest-cli telegraph tenacity uv uvloop \
+    xattr yt-dlp[default]
 
 # Install FFmpeg
 mkdir /Temp
 cd /Temp
-wget https://github.com/arakurumi/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar.xz
-7z x ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar.xz
-7z x ffmpeg-n7.1-latest-linux64-nonfree-7.1.tar
-cd /Temp/ffmpeg-n7.1-latest-linux64-nonfree-7.1/bin
-mv ffmpeg /usr/bin/xytool
+wget https://github.com/arakurumi/FFmpeg-Builds/releases/download/autobuild-2024-09-30-02-42/ffmpeg-n7.0.2-19-g45ecf80f0e-linux64-nonfree-7.0.tar.xz
+7z x ffmpeg-n7.0.2-19-g45ecf80f0e-linux64-nonfree-7.0.tar.xz
+7z x ffmpeg-n7.0.2-19-g45ecf80f0e-linux64-nonfree-7.0.tar
+cd /Temp/ffmpeg-n7.0.2-19-g45ecf80f0e-linux64-nonfree-7.0/bin
+mv ffmpeg /usr/bin/xtra
 mv ffprobe /usr/bin/ffprobe
 mv ffplay /usr/bin/ffplay
-chmod +x /usr/bin/xytool /usr/bin/ffprobe /usr/bin/ffplay
+chmod +x /usr/bin/xtra /usr/bin/ffprobe /usr/bin/ffplay
 
 # Install rclone and rename binaries
 cd /Temp
 curl https://rclone.org/install.sh | bash
 
 # Rename binaries
-mv /usr/bin/rclone /usr/bin/xyfetch
-mv /usr/bin/aria2c /usr/bin/xygrep
-mv /usr/bin/qbittorrent-nox /usr/bin/xyuren
+mv /usr/bin/rclone /usr/bin/xone
+mv /usr/bin/aria2c /usr/bin/xria
+mv /usr/bin/qbittorrent-nox /usr/bin/xnox
 
 # Clone and build MEGA SDK
 git clone https://github.com/meganz/sdk.git --depth=1 -b v4.8.0 /home/sdk
