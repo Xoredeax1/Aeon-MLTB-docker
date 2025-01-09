@@ -1,4 +1,4 @@
-name: Docker.io
+name: Build Docker Images
 
 on:
   workflow_dispatch:
@@ -49,7 +49,7 @@ jobs:
           push: true
           no-cache: true
           provenance: false
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
